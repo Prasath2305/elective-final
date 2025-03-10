@@ -2,6 +2,11 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
+export const getAuthHeaders = () => {
+  const token = localStorage.getItem("jwtToken");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 export default function Dashboard() {
   const router = useRouter();
 
@@ -20,7 +25,7 @@ export default function Dashboard() {
       >
         <h2 className="text-3xl font-semibold mb-6 text-white">Admin Dashboard</h2>
 
-        {[
+        {[ 
           { label: "📅 Schedule Elective", path: "/schedule" },
           { label: "📊 View Reports", path: "/report" },
           { label: "🏫 Enter Student Details", path: "/StudentUpload" },

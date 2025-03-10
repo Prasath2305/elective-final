@@ -18,7 +18,7 @@ export default function ScheduleElective() {
     start_time: "",
     end_time: "",
   });
-  
+
   const [sections, setSections] = useState([{ label: "A", strength: "" }]);
   const [electives, setElectives] = useState([[{ subjectName: "", subCode: "" }]]);
   const [message, setMessage] = useState("");
@@ -46,12 +46,12 @@ export default function ScheduleElective() {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/admin/scheduleElective", formData, {
+      await axios.post("http://localhost:8080/admin/scheduleElective", formData, {
         headers: getAuthHeaders(),
       });
       setMessage("✅ Elective scheduled successfully!");
       setTimeout(() => router.push("/dashboard"), 2000);
-    } catch (error) {
+    } catch {
       setMessage("❌ Error scheduling elective.");
     }
   };

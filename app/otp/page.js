@@ -17,7 +17,7 @@ export default function OtpPage() {
     }
   }, [email, router]);
 
-  if (!email) return null; // Prevents rendering if email is missing
+  if (!email) return null; // Prevent rendering if email is missing
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,12 +41,12 @@ export default function OtpPage() {
         setLoading(false);
         router.push(decodedToken?.role === "ADMIN" ? "/dashboard" : "/ElectiveSelection");
       } else {
+        setLoading(false);
         setError(data.message || "Invalid OTP. Try again.");
       }
     } catch {
-      setError("Server error. Please try again.");
-    } finally {
       setLoading(false);
+      setError("Server error. Please try again.");
     }
   };
 
@@ -66,8 +66,10 @@ export default function OtpPage() {
 
         <form onSubmit={handleSubmit} className="otp-form">
           <input
-            type="number"
+            type="text"
             maxLength={6}
+            pattern="[0-9]*"
+            inputMode="numeric"
             placeholder="Enter OTP"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
@@ -76,7 +78,32 @@ export default function OtpPage() {
           />
 
           <button type="submit" disabled={loading} className="otp-button">
-            {loading ? "Verifying..." : "Verify OTP"}
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                Verifying...
+              </>
+            ) : (
+              "Verify OTP"
+            )}
           </button>
         </form>
 
